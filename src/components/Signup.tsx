@@ -1,36 +1,56 @@
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { signupValidationSchema } from "../validations/validation";
 
-interface Values {
-  name: string;
-  email: string;
-  phone_number: string;
-  user_type: string;
-  password: string;
-}
-
 const Signup = () => {
-  const initialValues: Values = {
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone_number: "",
     user_type: "",
     password: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('url', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        console.log('User created successfully!');
+        navigate('/login'); 
+      } else {
+        console.error('Error creating user:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
   };
 
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
   return (
-    <div className="bg-green-200 min-h-screen flex flex-col">
+    <div className="bg-lightgreen min-h-screen flex flex-col items-center justify-center">
       <div className="container mx-auto flex-1 flex flex-col items-center justify-center px-4">
         <div className="bg-white px-8 py-8 rounded shadow-md text-black w-full max-w-md">
           <h1 className="mb-8 text-3xl text-center font-bold text-green-700">
-            Sign Up - Grow with Us!
+            Create an account !
           </h1>
           <Formik
-            initialValues={initialValues}
+            initialValues={formData}
             validationSchema={signupValidationSchema} 
             onSubmit={(values) => {
-              console.log(values);
+              setFormData(values);
+              handleSubmit();
             }}
           >
             {({ errors, touched }) => (
@@ -131,7 +151,7 @@ const Signup = () => {
 
         <div className="text-green-700 mt-6">
           Already have an account?{" "}
-          <Link to="/login" className="text-white hover:text-green-500">
+          <Link to="/login" className="text-blue hover:text-green-500">
             Log in
           </Link>
           .

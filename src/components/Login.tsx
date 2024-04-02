@@ -1,11 +1,11 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
 import { loginValidationSchema } from "../validations/validation";
 
 const Login = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-green-50">
+    <div className="bg-lightgreen min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold mb-6 text-center text-green-800">Welcome back!</h1>
         <Formik
@@ -25,9 +25,8 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
-                  className={`border border-green-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${
-                    touched.email && errors.email ? "border-red-500" : ""
-                  }`}
+                  className={`border border-green-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${touched.email && errors.email ? "border-red-500" : ""
+                    }`}
                   placeholder="name@gmail.com"
                   required
                   autoFocus
@@ -42,10 +41,9 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
-                  className={`border border-green-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${
-                    touched.password && errors.password ? "border-red-500" : ""
-                  }`}
-                  placeholder="••••••••"
+                  className={`border border-green-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${touched.password && errors.password ? "border-red-500" : ""
+                    }`}
+                  placeholder="*******"
                   required
                 />
                 <ErrorMessage name="password" component="div" className="text-sm text-red-500 mt-1" />
@@ -59,10 +57,9 @@ const Login = () => {
             </Form>
           )}
         </Formik>
-        <p className="text-center text-sm text-gray-600 mt-4">
-          Don't have a farm account yet?{" "}
-          <Link to="/signup" className="font-medium text-green-500 hover:underline">
-            Sign up
+        <p className="text-center mt-4">Not registered yet? 
+          <Link to="/Signup" className="text-indigo-600 font-medium inline-flex space-x-1 items-center">
+            <span>Register now</span>
           </Link>
         </p>
       </div>
