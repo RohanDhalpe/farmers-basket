@@ -1,11 +1,15 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Navbar from './components/Navbar';
+import Login from './modules/Login';
+import Signup from './modules/Signup';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import ViewProducts from './components/ViewProducts';
-import ProductForm from './components/ProductForm';
-import  Home  from './components/Home';
+import ViewProducts from './pages/ViewProducts';
+import AdminDashBoard from './pages/AdminPage';
+import  Home  from './modules/Home';
+import ViewUsers from './pages/ViewUsers';
+import ViewOrders from './pages/ViewOrders';
+import UserPage from './pages/UserPage';
+import BuyProducts from './pages/BuyProduct';
+import Error from './modules/Errror';
 
 const queryClient=new QueryClient();
 
@@ -24,13 +28,35 @@ function App() {
             element:  <Home/>
         },
         {
-            path: "/createproduct",
-            element:  <ProductForm/>
+            path: "/admin",
+            element:  <AdminDashBoard/>
         },
         {
             path:"/viewproducts",
-            element:<ViewProducts/>
-        }
+            element:<ViewProducts onProductCountChange={() => {}} />
+
+        },
+        {
+            path:"/getusers",
+            element:<ViewUsers/>
+        },
+        {
+            path:"/getorders",
+            element:<ViewOrders/>
+        },
+        {
+            path:"/userpage",
+            element:<UserPage/>
+        },
+        {
+            path:"/buyproduct",
+            element:<BuyProducts/>
+        },
+        {
+            path:"*",
+            element:<Error/>
+        },
+
     ])
     return (
         <QueryClientProvider client={queryClient}>
