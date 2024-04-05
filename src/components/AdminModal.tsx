@@ -3,7 +3,7 @@ import { List } from "antd";
 import axios from "axios";
 import { User } from "../types/type";
 
-const UserModal = () => {
+const AdminModal = () => {
   const [userDetails, setUserDetails] = useState<User>();
   const token = localStorage.getItem("token");
 
@@ -45,8 +45,7 @@ const UserModal = () => {
     <List
       size="small"
       dataSource={[
-        { label: "ID", value: userDetails.ID },
-        { label: "Name", value: userDetails.name },
+        { label: "Admin", value: userDetails.name },
         { label: "Phone Number", value: userDetails.phone_number },
         { label: "Role", value: userDetails.user_type },
       ]}
@@ -59,4 +58,4 @@ const UserModal = () => {
   );
 };
 
-export default UserModal;
+export default AdminModal;

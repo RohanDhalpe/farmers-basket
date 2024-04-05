@@ -47,137 +47,132 @@ function AddProductModal({ closeModal }: { closeModal: Function }) {
   };
 
   return (
-    <div>
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center"
-        role="dialog"
-      >
-        <div className="bg-white w-96 rounded-lg p-8">
-          <h2 className="text-xl font-bold mb-4">Add Product</h2>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={productSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block font-semibold">
-                    Name
-                  </label>
-                  <Field
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="border border-gray-300 rounded px-3 py-2 w-full"
-                  />
-                  <ErrorMessage
-                    name="name"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="description" className="block font-semibold">
-                    Description
-                  </label>
-                  <Field
-                    type="text"
-                    id="description"
-                    name="description"
-                    className="border border-gray-300 rounded px-3 py-2 w-full"
-                  />
-                  <ErrorMessage
-                    name="description"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="category" className="block font-semibold">
-                    Category
-                  </label>
-                  <Field
-                    type="text"
-                    id="category"
-                    name="category"
-                    className="border border-gray-300 rounded px-3 py-2 w-full"
-                  />
-                  <ErrorMessage
-                    name="category"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="price" className="block font-semibold">
-                    Price
-                  </label>
-                  <Field
-                    type="number"
-                    id="price"
-                    name="price"
-                    className="border border-gray-300 rounded px-3 py-2 w-full"
-                  />
-                  <ErrorMessage
-                    name="price"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="isSeasonal" className="block font-semibold">
-                    Is Seasonal
-                  </label>
-                  <Field
-                    type="checkbox"
-                    id="isSeasonal"
-                    name="isSeasonal"
-                    className="mr-2"
-                  />
-                  <ErrorMessage
-                    name="isSeasonal"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="quantity" className="block font-semibold">
-                    Quantity
-                  </label>
-                  <Field
-                    type="number"
-                    id="quantity"
-                    name="quantity"
-                    className="border border-gray-300 rounded px-3 py-2 w-full"
-                  />
-                  <ErrorMessage
-                    name="quantity"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => closeModal()}
-                    className="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
-                    disabled={isSubmitting}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    disabled={isSubmitting || isLoading}
-                  >
-                    {isLoading ? 'Adding...' : 'Add Product'}
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white w-full max-w-lg p-8 rounded-lg">
+        <h2 className="text-xl font-bold mb-4">Add Product</h2>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={productSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block font-semibold">
+                  Name
+                </label>
+                <Field
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="form-input border border-gray-300 rounded-md"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="text-red-700 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="description" className="block font-semibold">
+                  Description
+                </label>
+                <Field
+                  type="text"
+                  id="description"
+                  name="description"
+                  className="form-input border border-gray-300 rounded-md"
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="category" className="block font-semibold">
+                  Category
+                </label>
+                <Field
+                  type="text"
+                  id="category"
+                  name="category"
+                  className="form-input border border-gray-300 rounded-md"
+                />
+                <ErrorMessage
+                  name="category"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="price" className="block font-semibold">
+                  Price
+                </label>
+                <Field
+                  type="number"
+                  id="price"
+                  name="price"
+                  className="form-input border border-gray-300 rounded-md"
+                />
+                <ErrorMessage
+                  name="price"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="isSeasonal" className="block font-semibold">
+                  Is Seasonal
+                </label>
+                <Field
+                  type="checkbox"
+                  id="isSeasonal"
+                  name="isSeasonal"
+                  className="form-checkbox"
+                />
+                <ErrorMessage
+                  name="isSeasonal"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="quantity" className="block font-semibold">
+                  Quantity
+                </label>
+                <Field
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  className="form-input"
+                />
+                <ErrorMessage
+                  name="quantity"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => closeModal()}
+                  className="btn-cancel mr-2 px-4 py-2 rounded-md text-black font-semibold transition duration-300 ease-in-out bg-green-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn-submit px-4 py-2 rounded-md text-black font-semibold transition duration-300 ease-in-out bg-green-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                  disabled={isSubmitting || isLoading}
+                >
+                  {isLoading ? 'Adding...' : 'Add Product'}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );

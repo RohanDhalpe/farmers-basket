@@ -1,45 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Order } from "../types/type";
-import AdminHeader from '../components/AdminHeader';
 
-const ViewOrders = () => {
+const UserOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const token = localStorage.getItem("token"); 
+  const userId = localStorage.getItem("id"); // Assuming you have the user's ID stored in localStorage
+
+  const fetchOrders = async () => {
+    try {
+      if (!token || !userId) {
+        console.error('Token or user ID is missing.');
+        return;
+      }
+
+      const response = await axios.get(`http://localhost:8080/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      console.log("Response data:", response.data);
+
+      const ordersData: Order[] = response.data.data;
+
+      console.log("Orders data:", ordersData);
+
+      if (response.status === 200) {
+        // Filter orders by matching customer_id with user_id
+        const userOrders = ordersData.filter(order => order.customer_id === parseInt(userId));
+        setOrders(userOrders);
+      } else {
+        console.error('Error fetching orders:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        if (!token) {
-          console.error('Token is missing.');
-          return;
-        }
- 
-        const response = await axios.get('http://localhost:8080/orders', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        const OrdersData: Order[] = response.data.data
-
-        if (response.status === 200) {
-          setOrders(OrdersData);
-        } else {
-          console.error('Error fetching orders:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
-
     fetchOrders();
-  }, [token]); 
+  }, []); // Empty dependency array to ensure the effect runs only once on component mount
 
   return (
-    <> 
-      <AdminHeader/>
-      <h1 className="text-2xl font-semibold mb-4">All Orders ({orders.length})</h1> {/* Display count of orders */}
+    <>
+      <h1 className="text-2xl font-semibold mb-4">Your Orders</h1>
       <div className="overflow-x-auto">
         <table className="table-auto w-full">
           <thead>
@@ -80,4 +85,4 @@ const ViewOrders = () => {
   );
 }
 
-export default ViewOrders;
+export default UserOrders;

@@ -16,11 +16,6 @@ export const Error = () => {
         <li>Go back to the previous page and try again.</li>
         <li>Contact our support team for assistance.</li>
       </ul>
-      <img
-        src={Errrorimg}
-        alt="Farmer with a puzzled expression"
-        className="w-64 h-auto mt-8"
-      />
     </div>
   );
 }

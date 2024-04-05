@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import { loginValidationSchema } from "../validations/validation";
 import axios from 'axios';
+import { useDispatch } from "react-redux";
+import { login as authLogin } from "../api/authslice"
 
 interface LoginFormValues {
   email: string;
@@ -10,6 +12,7 @@ interface LoginFormValues {
 }
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -18,19 +21,20 @@ const Login = () => {
       const response = await axios.post('http://localhost:8080/users/login', values);
       const authtoken = response.data.data.token;
       localStorage.setItem("token", authtoken);
-      localStorage.setItem("id",response.data.data.id);
-      
-      if(response.data.data.user_type=="Buyer")
-      navigate("/userpage")
-     else
-      navigate("/admin");
+      localStorage.setItem("id", response.data.data.id);
+
+      dispatch(authLogin({ userData: response.data.data }));
+      if (response.data.data.user_type == "Buyer")
+        navigate("/userpage")
+      else
+        navigate("/admin");
     } catch (error) {
       setError("Invalid email or password");
     } finally {
       actions.setSubmitting(false);
     }
   };
-  
+
 
   return (
     <div className="bg-lightgreen min-h-screen flex items-center justify-center">
@@ -85,7 +89,7 @@ const Login = () => {
           )}
         </Formik>
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        <p className="text-center mt-4">Not registered yet? 
+        <p className="text-center mt-4">Not registered yet?
           <Link to="/signup" className="text-indigo-600 font-medium inline-flex space-x-1 items-center">
             <span>Register now</span>
           </Link>

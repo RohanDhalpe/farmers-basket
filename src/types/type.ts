@@ -8,6 +8,16 @@ export interface ProductData {
     quantity: number;
   }
 
+  export interface CartItemData {
+    id:number;
+    name: string;
+    description: string;
+    category: string;
+    price: number;
+    isSeasonal: boolean;
+    quantity: number;
+  }
+
   export interface User{
     ID:number;
     name:string,
