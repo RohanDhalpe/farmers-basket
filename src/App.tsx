@@ -4,7 +4,7 @@ import Signup from './modules/Signup';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ViewProducts from './pages/ViewProducts';
 import AdminDashBoard from './pages/AdminPage';
-import ViewUsers from './pages/ViewUsers';
+import ViewUsers from '././pages/ViewUsers';
 import ViewOrders from './pages/ViewOrders';
 import UserPage from './pages/UserPage';
 import BuyProducts from './pages/BuyProductPage';
@@ -15,8 +15,10 @@ import store from './api/store';
 import Protected from './modules/AuthLayout';
 import Landing from './pages/LandingPage';
 import Cart from './pages/CartPage';
-import { CartItemData } from './types/type';
-import { useState } from 'react';
+import Orderconfirm from './modules/Orderconfirm';
+import Footer from './pages/Footer';
+
+
 
 const queryClient = new QueryClient();
 
@@ -86,6 +88,15 @@ function App() {
             path: "/mycart",
             element:  <Protected authentication={true}><Cart/></Protected>
         },
+        {
+            path: "/confirmorder",
+            element:  <Protected authentication={true}><Orderconfirm/></Protected>
+        },
+        {
+            path: "/footer",
+            element: <Protected authentication={true}><Footer/></Protected>
+        },
+
     ])
     return (
         <Provider store={store}>

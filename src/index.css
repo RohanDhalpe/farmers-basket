@@ -1,9 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-
-* {
-  font-family: "Montserrat", sans-serif;
-}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*{
+  font-family: "Montserrat", sans-serif;
+}
+
+.font-roboto {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 3px;
+
+}
+
+.animate-move-in-slow {
+  animation: move-in-slow 2.5s ease-out forwards;
+}
+
+@keyframes move-in-slow {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.text-center > * {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.text-center > *:hover {
+  opacity: 0.9;
+}
+
+

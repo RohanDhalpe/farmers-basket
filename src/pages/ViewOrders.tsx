@@ -5,7 +5,9 @@ import AdminHeader from '../components/AdminHeader';
 
 const ViewOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const token = localStorage.getItem("token"); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(5); // Number of orders per page
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -14,17 +16,22 @@ const ViewOrders = () => {
           console.error('Token is missing.');
           return;
         }
- 
-        const response = await axios.get('http://localhost:8080/orders', {
+
+        const response = await axios.get(`http://localhost:8080/orders?page=${currentPage}&limit=${ordersPerPage}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
-        const OrdersData: Order[] = response.data.data
+        const OrdersData: Order[] = response.data.data;
 
         if (response.status === 200) {
-          setOrders(OrdersData);
+          // Convert order date format to yyyy-mm-dd
+          const formattedOrders = OrdersData.map(order => ({
+            ...order,
+            order_date: new Date(order.order_date).toISOString().split('T')[0]
+          }));
+          setOrders(formattedOrders);
         } else {
           console.error('Error fetching orders:', response.statusText);
         }
@@ -34,48 +41,72 @@ const ViewOrders = () => {
     };
 
     fetchOrders();
-  }, [token]); 
+  }, [currentPage, ordersPerPage, token]);
+
+  // Function to delete an order
+  const deleteOrder = async (orderId: number) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 204) {
+        // Remove the deleted order from the state
+        setOrders(orders.filter(order => order.id !== orderId));
+      } else {
+        console.error('Error deleting order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting order:', error);
+    }
+  };
+
+  // Logic to get current orders
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  // Change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <> 
-      <AdminHeader/>
-      <h1 className="text-2xl font-semibold mb-4">All Orders ({orders.length})</h1> {/* Display count of orders */}
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">Id</th>
-              <th className="px-4 py-2">Customer Id</th>
-              <th className="px-4 py-2">Product Id</th>
-              <th className='px-4 pt-2'>Order Date</th>
-              <th className="px-4 py-2">Total Amount</th>
-              <th className="px-4 py-2">Payment option</th>
-              <th className="px-4 py-2">Payment Status</th>
-              <th className='px-4 pt-2'>Order Status</th>
-              <th className="px-4 py-2">Order Type</th>
-              <th className="px-4 py-2">Delivery Address</th>
-              <th className='px-4 pt-2'>Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders?.map(order => ( 
-              <tr key={order.id}>
-                <td className="border px-4 py-2">{order.id}</td>
-                <td className="border px-4 py-2">{order.customer_id}</td>
-                <td className="border px-4 py-2">{order.product_id}</td>
-                <td className="border px-4 py-2">{order.order_date}</td>
-                <td className="border px-4 py-2">{order.total_amount}</td>
-                <td className="border px-4 py-2">{order.payment_option}</td>
-                <td className="border px-4 py-2">{order.payment_status}</td>
-                <td className="border px-4 py-2">{order.order_status}</td>
-                <td className="border px-4 py-2">{order.order_type}</td>
-                <td className="border px-4 py-2">{order.delivery_address}</td>
-                <td className="border px-4 py-2">{order.quantity}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <>
+      <AdminHeader />
+      <h1 className="text-2xl font-semibold mb-4 ml-5 mt-5">All Orders ({orders.length})</h1>
+      <div className="ml-5 mr-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
+        {currentOrders.map(order => (
+          <div key={order.id} className="border p-4 rounded-md">
+            <p className="text-lg"><strong>Order ID:</strong> {order.id}</p>
+            <p className="text-lg"><strong>Customer ID:</strong> {order.customer_id}</p>
+            <p className="text-lg"><strong>Product ID:</strong> {order.product_id}</p>
+            <p className="text-lg"><strong>Order Date:</strong> {order.order_date}</p>
+            <p className="text-lg"><strong>Payment Option:</strong> {order.payment_option}</p>
+            <p className="text-lg"><strong>Delivery Address:</strong> {order.delivery_address}</p>
+            <p className="text-lg"><strong>Total Quantity:</strong> {order.quantity}</p>
+            <p className="text-lg"><strong>Total Amount:</strong> {order.total_amount}</p>
+            <button onClick={() => deleteOrder(order.id)} className="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+              Delete Order
+            </button>
+          </div>
+        ))}
       </div>
+      {/* Pagination */}
+      <ul className="flex justify-center mt-4">
+        {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }).map((_, index) => (
+          <li key={index}>
+            <button
+              onClick={() => paginate(index + 1)}
+              className={`px-3 py-1 mx-1 focus:outline-none ${
+                currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+              }`}
+            >
+              {index + 1}
+            </button>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

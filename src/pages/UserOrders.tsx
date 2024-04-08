@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Order } from "../types/type";
+import { useNavigate } from 'react-router-dom';
+import { HiArrowLeft } from 'react-icons/hi';
 
 const UserOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const token = localStorage.getItem("token"); 
-  const userId = localStorage.getItem("id"); // Assuming you have the user's ID stored in localStorage
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
+  const navigate = useNavigate(); // Hook to navigate to other pages
 
   const fetchOrders = async () => {
     try {
@@ -29,7 +32,14 @@ const UserOrders = () => {
       if (response.status === 200) {
         // Filter orders by matching customer_id with user_id
         const userOrders = ordersData.filter(order => order.customer_id === parseInt(userId));
-        setOrders(userOrders);
+
+        // Format order dates before setting state
+        const formattedOrders = userOrders.map(order => ({
+          ...order,
+          order_date: new Date(order.order_date).toLocaleDateString()
+        }));
+
+        setOrders(formattedOrders);
       } else {
         console.error('Error fetching orders:', response.statusText);
       }
@@ -38,49 +48,54 @@ const UserOrders = () => {
     }
   };
 
+  // Function to delete an order
+  const deleteOrder = async (orderId: number) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 204) {
+        // Remove the deleted order from the state
+        setOrders(orders.filter(order => order.id !== orderId));
+      } else {
+        console.error('Error deleting order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting order:', error);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
-  }, []); // Empty dependency array to ensure the effect runs only once on component mount
+  }, []);
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-4">Your Orders</h1>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">Id</th>
-              <th className="px-4 py-2">Customer Id</th>
-              <th className="px-4 py-2">Product Id</th>
-              <th className='px-4 pt-2'>Order Date</th>
-              <th className="px-4 py-2">Total Amount</th>
-              <th className="px-4 py-2">Payment option</th>
-              <th className="px-4 py-2">Payment Status</th>
-              <th className='px-4 pt-2'>Order Status</th>
-              <th className="px-4 py-2">Order Type</th>
-              <th className="px-4 py-2">Delivery Address</th>
-              <th className='px-4 pt-2'>Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders?.map(order => ( 
-              <tr key={order.id}>
-                <td className="border px-4 py-2">{order.id}</td>
-                <td className="border px-4 py-2">{order.customer_id}</td>
-                <td className="border px-4 py-2">{order.product_id}</td>
-                <td className="border px-4 py-2">{order.order_date}</td>
-                <td className="border px-4 py-2">{order.total_amount}</td>
-                <td className="border px-4 py-2">{order.payment_option}</td>
-                <td className="border px-4 py-2">{order.payment_status}</td>
-                <td className="border px-4 py-2">{order.order_status}</td>
-                <td className="border px-4 py-2">{order.order_type}</td>
-                <td className="border px-4 py-2">{order.delivery_address}</td>
-                <td className="border px-4 py-2">{order.quantity}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <button onClick={() => navigate('/userpage')} className="flex items-center bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-5 mb-5 rounded-sm transition duration-300 text-lg">
+        <HiArrowLeft className="mr-2" /> Back to Home 
+      </button>
+      <h1 className="text-2xl font-medium mb-4 ml-10">Your Orders</h1>
+      <div>
+        {orders?.map((order) => (
+          <div key={order.id} className="w-full p-4 rounded-lg shadow-lg">
+            <div className="px-4 py-2 bg-white">
+              <p className="text-2xl font-semibold">Order ID: {order.id}</p>
+              <p className="text-lg">Product ID: {order.product_id}</p>
+              <p className="text-lg">Order Date: {order.order_date}</p>
+              <p className="text-lg">Quantity: {order.quantity}</p>
+              <p className="text-lg">Payment Status: {order.payment_status}</p>
+              <p className="text-lg">Total Amount: Rs {order.total_amount}</p>
+              <button onClick={() => deleteOrder(order.id)} className="mt-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+                Delete Order
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
+
     </>
   );
 }

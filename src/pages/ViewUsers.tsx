@@ -36,31 +36,46 @@ const ViewUsers = () => {
     };
 
     fetchUsers();
-  }, [token]); 
+  }, [token]);
+
+  // Function to delete a user
+  const deleteUser = async (userId: number) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 204) {
+        // Remove the deleted user from the state
+        setUsers(users.filter(user => user.ID !== userId));
+        setUserCount(userCount - 1); // Update user count
+      } else {
+        console.error('Error deleting user:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
 
   return (
     <>
       <AdminHeader />
-      <h1 className="text-2xl font-semibold mb-4">Your customers ({userCount})</h1>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Email</th>
-              <th className="px-4 py-2">Phone Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => ( 
-              <tr key={user.ID}>
-                <td className="border px-4 py-2">{user.name}</td>
-                <td className="border px-4 py-2">{user.email}</td>
-                <td className="border px-4 py-2">{user.phone_number}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <h1 className="text-3xl font-semibold mb-4 ml-4 mt-4">Your customers ({userCount})</h1>
+      <div className="">
+        {users.map(user => (
+          <div key={user.ID} className=" ml-5 mr-5 p-4">
+            <div className="border p-4 rounded-md">
+              <h2 className="text-lg font-bold">{user.name}</h2>
+              <p className="mt-2">Email: {user.email}</p>
+              <p className="mt-2">Phone Number: {user.phone_number}</p>
+              <button onClick={() => deleteUser(user.ID)} className="mt-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+                Delete User
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </>
   );

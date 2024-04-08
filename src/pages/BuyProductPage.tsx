@@ -1,23 +1,209 @@
-import React, { useState, useEffect, FormEventHandler } from "react";
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import { ProductData } from "../types/type";
+// import { Modal } from "antd";
+// import { useDispatch } from "react-redux";
+// import { addToCart } from "../api/myOrderSlice";
+// import { OrderItem } from "../api/types";
+// import bg4 from '../assets/bg4.png'
+
+// const BuyProducts = () => {
+
+//   const token = localStorage.getItem("token");
+//   const id = localStorage.getItem("id");
+
+//   const dispatch = useDispatch();
+
+//   const [open, setOpen] = useState(false);
+//   const [confirmLoading, setConfirmLoading] = useState(false);
+//   const [modalText, setModalText] = useState('Content of the modal');
+//   const [quantity, setQuantity] = useState<number>(0);
+//   const [products, setProducts] = useState<ProductData[]>([]);
+//   const [product, setProduct] = useState<ProductData>()
+//   const [loading, setLoading] = useState(true);
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState<string>('');
+
+//   const showAddToCartModal = () => {
+//     setOpen(true);
+//   };
+
+//   const handleOk = () => {
+//     setModalText('The modal will be closed after two seconds');
+//     setConfirmLoading(true);
+//     setTimeout(() => {
+//       setOpen(false);
+//       setConfirmLoading(false);
+//     }, 2000);
+//   };
+
+//   const handleCancel = () => {
+//     console.log('Clicked cancel button');
+//     setOpen(false);
+//   };
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         if (!token) {
+//           console.error('Token is missing.');
+//           return;
+//         }
+//         console.log(id);
+//         const response = await axios.get('http://localhost:8080/products', {
+//           headers: {
+//             Authorization: `Bearer ${token}`
+//           }
+//         });
+
+//         const Products: ProductData[] = response.data.data
+
+//         if (response.status === 200) {
+//           setProducts(Products);
+//           setLoading(false);
+//         } else {
+//           console.error('Error fetching products:', response.statusText);
+//           setLoading(false);
+//         }
+//       } catch (error) {
+//         console.error('Error fetching products:', error);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, [token]);
+
+//   const handleAddToCart = (product: ProductData, e: React.MouseEvent<HTMLButtonElement>) => {
+//     e.preventDefault();
+//     showAddToCartModal();
+//     setProduct(product);
+//   };
+
+//   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setQuantity(parseInt(e.target.value, 10));
+//   }
+
+//   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setSearchTerm(e.target.value);
+//   };
+
+//   const filteredProducts = products.filter(product =>
+//     product.name.toLowerCase().includes(searchTerm.toLowerCase())
+//   );
+
+//   return (
+//     <div className="container mt-5">
+//       <input
+//         type="text"
+//         placeholder="Search products..."
+//         onChange={handleSearch}
+//         className="border border-gray-300 rounded-md p-2 mb-4"
+//       />
+//       <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-6">
+//         {filteredProducts.map((product) => {
+//           return (
+//             <div key={product.id} className="bg-white rounded-md shadow-lg overflow-hidden mb-4">
+//               <img className="object-cover" />
+//               <div className="p-4">
+//                 <img src={bg4} alt="Product" className="w-full h-40 object-cover" />
+//                 <h4 className="text-xl mt-3 font-semibold text-black">{product.name}</h4>
+//                 <p className="text-base text-gray-600 mb-2">{product.description}</p>
+//                 <div className="flex flex-row justify-between">
+//                   <p className="text-base text-gray-600 pt-[15px]">₹{product.price}</p>
+//                   <button className="bg-green-500 hover:bg-blue-600 text-white font-bold text-sm py-2 px-4 rounded" onClick={(e) => handleAddToCart(product, e)}>Add to cart</button>
+//                 </div>
+//               </div>
+//             </div>
+//           )
+//         })}
+//       </div>
+
+//       <Modal
+//         title="Add to Cart"
+//         open={open}
+//         onOk={handleOk}
+//         onCancel={handleCancel}
+//         centered
+//         footer={[
+//           <button key="cancel" className="bg-gray-800 text-white font-bold py-2 px-4 rounded mr-2" onClick={handleCancel}>
+//             Cancel
+//           </button>,
+//           <button
+//             key="submit"
+//             className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+//             disabled={isSubmitting || quantity <= 0}
+//             onClick={() => {
+//               handleOk();
+//               if (product && quantity > 0) {
+//                 const orderItem: OrderItem = {
+//                   productInfo: product,
+//                   quantity: quantity,
+//                 };
+//                 dispatch(addToCart({ orderItem }));
+//               }
+//             }}
+//           >
+//             {isSubmitting ? 'Adding to Cart...' : 'Add to Cart'}
+//           </button>
+//         ]}
+//       >
+//         <div className="p-6">
+//           <div className="mb-6">
+//             <label htmlFor="quantity" className="block text-lg font-semibold text-gray-700 mb-2">Quantity:</label>
+//             <input
+//               type="number"
+//               id="quantity"
+//               name="quantity"
+//               className="form-input mt-1 block w-full h-12 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+//               onChange={handleQuantityChange}
+//               value={quantity}
+//               min="1"
+//               required
+//             />
+//             {quantity <= 0 && (
+//               <p className="text-red-500 text-sm mt-1">Please enter a valid quantity.</p>
+//             )}
+//           </div>
+//           <div className="mb-6">
+//             <label htmlFor="total_amount" className="block text-lg font-semibold text-gray-700 mb-2">Total Amount:</label>
+//             <div className="text-xl">₹{product && quantity * product.price}</div>
+//           </div>
+//         </div>
+//       </Modal>
+//     </div>
+//   );
+// };
+
+// export default BuyProducts;
+
+
+import { Pagination } from "antd";
 import axios from "axios";
-import { useFormik } from "formik";
-import { ProductData, BuyProduct, CartItemData } from "../types/type";
-import { useLocalStorage } from "@uidotdev/usehooks";
-import Cart from "./CartPage";
+import React, { useState, useEffect } from "react";
+import { ProductData } from "../types/type";
 import { Modal } from "antd";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../api/myOrderSlice";
 import { OrderItem } from "../api/types";
+import bg4 from '../assets/bg4.png'
 
 const BuyProducts = () => {
+  const token = localStorage.getItem("token");
 
-
-const dispatch = useDispatch()
-  /////////////////////////
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('Content of the modal');
+  const [quantity, setQuantity] = useState<number>(0);
+  const [products, setProducts] = useState<ProductData[]>([]);
+  const [product, setProduct] = useState<ProductData>()
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(9);
 
   const showAddToCartModal = () => {
     setOpen(true);
@@ -37,42 +223,6 @@ const dispatch = useDispatch()
     setOpen(false);
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-  ///////////
-  const [products, setProducts] = useState<ProductData[]>([]);
-  const [buyProduct, setBuyProduct] = useState<BuyProduct>({
-    customer_id: parseInt(localStorage.getItem("id") ?? "1"),
-    product_id: 0,
-    payment_option: "",
-    payment_status: "Paid",
-    order_status: "Dispatched",
-    delivery_address: "",
-    order_type: "buy",
-    quantity: 0
-  });
-  const [product, setProduct] = useState<ProductData>()
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const token = localStorage.getItem("token");
-  const id = localStorage.getItem("id");
-
-  const [cartItems, setCartItems] = useLocalStorage<CartItemData[]>("cart-items", []);
-
-  console.log(cartItems)
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,8 +230,13 @@ const dispatch = useDispatch()
           console.error('Token is missing.');
           return;
         }
-        console.log(id);
+
         const response = await axios.get('http://localhost:8080/products', {
+          params: {
+            page: currentPage,
+            pageSize: pageSize,
+            searchTerm: searchTerm
+          },
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -103,193 +258,125 @@ const dispatch = useDispatch()
     };
 
     fetchData();
-  }, [token]);
-
-  const handleBuy = (product: ProductData) => {
-    setProduct(product);
-    setBuyProduct({
-      ...buyProduct,
-      product_id: product.id
-    });
-    setShowModal(true);
-  };
-
-  const handleSubmit = async (values: BuyProduct) => {
-    try {
-      setIsSubmitting(true);
-      const { quantity, delivery_address, payment_option } = values;
-
-      const orderData: BuyProduct = {
-        customer_id: parseInt(localStorage.getItem("id") ?? "1"),
-        product_id: buyProduct.product_id,
-        payment_option: payment_option,
-        payment_status: "Paid",
-        order_status: "Dispatched",
-        delivery_address: delivery_address,
-        order_type: "buy",
-        quantity: quantity
-      };
-
-      const response = await axios.post('http://localhost:8080/orders', orderData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      console.log('Purchase successful:', response.data);
-      alert("Purchase Successful");
-      setShowModal(false);
-    } catch (error) {
-      console.error('Error purchasing product:', error);
-      alert("Purchase Failed");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      customer_id: parseInt(localStorage.getItem("id") ?? "1"),
-      product_id: 0,
-      payment_option: "",
-      payment_status: "Paid",
-      order_status: "Dispatched",
-      delivery_address: "",
-      order_type: "buy",
-      quantity: 0
-    },
-    onSubmit: handleSubmit
-  });
+  }, [token, currentPage, pageSize, searchTerm]);
 
   const handleAddToCart = (product: ProductData, e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
     showAddToCartModal();
     setProduct(product);
   };
-  
 
-  const handleRemoveFromCart = (product: ProductData) => {
-    const newItems = cartItems.filter((item) => item.id !== product.id)
-    setCartItems(newItems)
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(parseInt(e.target.value, 10));
   }
 
-  const [quantity, setQuantity] = useState<number>(0);
-  const handleQuantityChange = (e: any) => {
-    setQuantity(e.target.value)
-  }
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset current page when searching
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
     <div className="container mt-5">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-12 gap-y-6">
-        {products.map((product) => {
-          const isProductPresentInCart = cartItems.some((item) => item.id === product.id)
-
-
+      <input
+        type="text"
+        placeholder="Search products..."
+        onChange={handleSearch}
+        className="border border-gray-300 rounded-md p-2 mb-4"
+      />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-6">
+        {paginatedProducts.map((product) => {
           return (
-            <div key={product.id} className="bg-white rounded-md shadow-md overflow-hidden mb-4">
-              <img className="w-full h-40 object-cover" />
-              <div className="p-4">
-                <h4 className="text-xl font-semibold text-black">{product.name}</h4>
-                <p className="text-base text-gray-600 mb-2">{product.description}</p>
-                <div className="flex flex-row justify-between">
-                  <p className="text-base text-gray-600 pt-[15px]">₹{product.price}</p>
-                  {/* <div>
-                    <button className="bg-green-500 hover:bg-blue-600 text-white font-bold text-sm py-2 px-4 rounded" onClick={() => handleBuy(product)}>Buy</button>
-                  </div> */}
-                  <div>
-                    {
-                      isProductPresentInCart
-                        ?
-                        <button className="bg-green-500 hover:bg-blue-600 text-white font-bold text-sm py-2 px-4 rounded" onClick={() => handleRemoveFromCart(product)}>Remove from cart</button>
-                        :
-                        <button className="bg-green-500 hover:bg-blue-600 text-white font-bold text-sm py-2 px-4 rounded" onClick={(e) => handleAddToCart(product,e)}>Add to cart</button>
-                    }
-                  </div>
+            <div key={product.id} className="bg-white rounded-md shadow-lg overflow-hidden mb-8">
+              <img src={bg4} alt="Product" className="w-full h-72 object-cover" /> {/* Increased height */}
+              <div className="p-8"> {/* Increased padding */}
+                <h4 className="text-2xl mt-4 font-semibold text-black">{product.name}</h4> {/* Increased font size */}
+                <p className="text-lg text-gray-700 mb-6">{product.description}</p> {/* Increased font size */}
+                <div className="flex justify-between items-center">
+                  <p className="text-xl text-gray-800">₹{product.price}</p> {/* Increased font size */}
+                  <button className="bg-green-500 hover:bg-blue-600 text-white font-bold text-lg py-3 px-6 rounded-lg" onClick={(e) => handleAddToCart(product, e)}>Add to cart</button> {/* Increased font size */}
                 </div>
               </div>
             </div>
           )
         })}
       </div>
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-md overflow-hidden max-w-md">
-            <div className="bg-gray-700 text-white py-3 px-4 flex justify-between items-center">
-              <h5 className="font-semibold">Buy Product</h5>
-              <button type="button" className="text-white" onClick={() => setShowModal(false)}>Close</button>
-            </div>
-            <div className="p-4">
-              <form onSubmit={formik.handleSubmit}>
-                <div className="mb-4">
-                  <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">Quantity:</label>
-                  <input type="number" id="quantity" name="quantity" className="form-input mt-1 block w-full" value={formik.values.quantity} onChange={formik.handleChange} />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="delivery_address" className="block text-sm font-medium text-gray-700">Delivery Address:</label>
-                  <input type="text" id="delivery_address" name="delivery_address" className="form-input mt-1 block w-full" value={formik.values.delivery_address} onChange={formik.handleChange} />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="payment_option" className="block text-sm font-medium text-gray-700">Payment Option:</label>
-                  <select id="payment_option" name="payment_option" className="form-select mt-1 block w-full" value={formik.values.payment_option} onChange={formik.handleChange}>
-                    <option value="cash">Cash</option>
-                    <option value="debit_card">Debit Card</option>
-                    <option value="credit_card">Credit Card</option>
-                    <option value="net_banking">Net Banking</option>
-                    <option value="upi">UPI</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="total_amount" className="block text-sm font-medium text-gray-700">Total Amount:</label>
-                  <div>{product && formik.values.quantity * product.price}</div>
-                </div>
-                <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" disabled={isSubmitting}>
-                  {isSubmitting ? 'Submitting...' : 'Submit'}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
-
+      {/* Pagination */}
+      <div className="flex justify-center">
+        <Pagination
+          current={currentPage}
+          total={filteredProducts.length}
+          pageSize={pageSize}
+          onChange={handlePageChange}
+        />
+      </div>
+      {/* End Pagination */}
       <Modal
-        title="MY cart"
+        title="Add to Cart"
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
-      >
-        <div className="p-4">
-          
-            <div className="mb-4">
-              <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">Quantity:</label>
-              <input type="number" id="quantity" name="quantity" className="form-input mt-1 block w-full" onChange={handleQuantityChange} />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="total_amount" className="block text-sm font-medium text-gray-700">Total Amount:</label>
-              <div className="">{product && quantity * product.price}</div>
-            </div>
-            <button 
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" disabled={isSubmitting}
+        centered
+        footer={[
+          <button key="cancel" className="bg-gray-800 text-white font-bold py-2 px-4 rounded mr-2" onClick={handleCancel}>
+            Cancel
+          </button>,
+          <button
+            key="submit"
+            className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+            disabled={isSubmitting || quantity <= 0}
             onClick={() => {
-              handleCancel()
-              if(product&&quantity>0)
-              {
-                const orderItem:OrderItem ={
-                  productInfo:product,
-                  quantity:quantity,
-                }
-                dispatch(addToCart({orderItem}))
-
+              handleOk();
+              if (product && quantity > 0) {
+                const orderItem: OrderItem = {
+                  productInfo: product,
+                  quantity: quantity,
+                };
+                dispatch(addToCart({ orderItem }));
               }
             }}
-            >
-              Submit
-            </button>
+          >
+            {isSubmitting ? 'Adding to Cart...' : 'Add to Cart'}
+          </button>
+        ]}
+      >
+        <div className="p-6">
+          <div className="mb-6">
+            <label htmlFor="quantity" className="block text-lg font-semibold text-gray-700 mb-2">Quantity:</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              className="form-input mt-1 block w-full h-12 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              onChange={handleQuantityChange}
+              value={quantity}
+              min="1"
+              style={{ fontSize: "1.5em" }} // Adjust the font size as needed (1.2em is just an example)
+              required
+            />
+
+            {quantity <= 0 && (
+              <p className="text-red-500 text-sm mt-1">Please enter a valid quantity.</p>
+            )}
+          </div>
+          <div className="mb-6">
+            <label htmlFor="total_amount" className="block text-lg font-semibold text-gray-700 mb-2">Total Amount:</label>
+            <div className="text-xl">₹{product && quantity * product.price}</div>
+          </div>
         </div>
       </Modal>
-
     </div>
   );
 };
 
 export default BuyProducts;
+

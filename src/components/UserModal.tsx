@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { List } from "antd";
 import axios from "axios";
 import { User } from "../types/type";
@@ -44,8 +44,8 @@ const UserModal = () => {
   return (
     <List
       size="small"
+      style={{ width: "500px" }}
       dataSource={[
-        { label: "ID", value: userDetails.ID },
         { label: "Name", value: userDetails.name },
         { label: "Phone Number", value: userDetails.phone_number },
         { label: "Role", value: userDetails.user_type },

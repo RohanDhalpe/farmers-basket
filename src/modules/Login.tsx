@@ -24,7 +24,7 @@ const Login = () => {
       localStorage.setItem("id", response.data.data.id);
 
       dispatch(authLogin({ userData: response.data.data }));
-      if (response.data.data.user_type == "Buyer")
+      if (response.data.data.user_type === "Buyer")
         navigate("/userpage")
       else
         navigate("/admin");
@@ -35,9 +35,8 @@ const Login = () => {
     }
   };
 
-
   return (
-    <div className="bg-lightgreen min-h-screen flex items-center justify-center">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold mb-6 text-center text-green-800">Welcome back!</h1>
         <Formik
@@ -48,14 +47,14 @@ const Login = () => {
           {({ errors, touched, isSubmitting }) => (
             <Form className="space-y-6">
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-green-700">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Your email
                 </label>
                 <Field
                   type="email"
                   name="email"
                   id="email"
-                  className={`border border-green-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${touched.email && errors.email ? "border-red-500" : ""
+                  className={`border border-gray-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${touched.email && errors.email ? "border-red-500" : ""
                     }`}
                   placeholder="name@gmail.com"
                   required
@@ -64,14 +63,14 @@ const Login = () => {
                 <ErrorMessage name="email" component="div" className="text-sm text-red-500 mt-1" />
               </div>
               <div className="mb-6">
-                <label htmlFor="password" className="block text-sm font-medium text-green-700">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Account password
                 </label>
                 <Field
                   type="password"
                   name="password"
                   id="password"
-                  className={`border border-green-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${touched.password && errors.password ? "border-red-500" : ""
+                  className={`border border-gray-300 p-2 rounded-md w-full focus:ring-green-500 focus:border-green-500 ${touched.password && errors.password ? "border-red-500" : ""
                     }`}
                   placeholder="*******"
                   required

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { List } from "antd";
 import axios from "axios";
 import { User } from "../types/type";
