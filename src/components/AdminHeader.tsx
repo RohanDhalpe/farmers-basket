@@ -48,7 +48,7 @@ function AdminHeader() {
                     className="text-lg text-white hover:bg-green hover:text-blue-500 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onClick={() => navigate('/viewproducts')}
                   >
-                    View Products
+                    Manage Products
                   </button>
                 </li>
                 <li>
@@ -56,7 +56,7 @@ function AdminHeader() {
                     className="text-lg text-white hover:bg-green hover:text-blue-500 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onClick={() => navigate('/getusers')}
                   >
-                    View Users
+                    Manage Users
                   </button>
                 </li>
                 <li>
@@ -64,7 +64,7 @@ function AdminHeader() {
                     className="text-lg text-white hover:bg-green hover:text-blue-500 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onClick={() => navigate('/getorders')}
                   >
-                    View Orders
+                    Manage Orders
                   </button>
                 </li>
               </ul>

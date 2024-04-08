@@ -82,8 +82,8 @@ const ViewOrders = () => {
             <p className="text-lg"><strong>Delivery Address:</strong> {order.delivery_address}</p>
             <p className="text-lg"><strong>Total Quantity:</strong> {order.quantity}</p>
             <p className="text-lg"><strong>Total Amount:</strong> {order.total_amount}</p>
-            <button onClick={() => deleteOrder(order.id)} className="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
-              Delete Order
+            <button onClick={() => deleteOrder(order.id)} className="mt-4 bg-teal-700 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+              Update Order
             </button>
           </div>
         ))}

@@ -86,7 +86,7 @@ const UserOrders = () => {
               <p className="text-lg">Payment Status: {order.payment_status}</p>
               <p className="text-lg">Total Amount: Rs {order.total_amount}</p>
               <button onClick={() => deleteOrder(order.id)} className="mt-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
-                Delete Order
+                Cancel Order
               </button>
             </div>
           </div>

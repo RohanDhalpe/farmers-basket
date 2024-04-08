@@ -104,6 +104,7 @@ const Cart: React.FC = () => {
                     <option value="Debit Card">Debit Card</option>
                     <option value="Net Banking">Net Banking</option>
                     <option value="UPI">UPI</option>
+                    <option value="Cash On Delivery">Cash On Delivery</option>
                   </Field>
                   <ErrorMessage name="paymentOption" component="div" className="text-red-500" />
                 </div>

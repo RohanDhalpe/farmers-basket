@@ -39,7 +39,14 @@ const ViewProducts = () => {
     fetchData();
   }, [currentPage, productsPerPage, token]);
 
-  
+  const handleUpdate = (productId: number) => {
+    console.log(`Update product with ID ${productId}`);
+  };
+
+  const handleDelete = (productId: number) => {
+    console.log(`Delete product with ID ${productId}`);
+  };
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -64,6 +71,21 @@ const ViewProducts = () => {
                   <p>Category: {product.category}</p>
                   <p>Price: ₹{product.price}</p>
                   <p>Quantity: {product.quantity}</p>
+                  {/* Update and Delete Buttons */}
+                  <div className="flex justify-between mt-4">
+                    <button
+                      onClick={() => handleUpdate(product.id)} // Assuming handleUpdate function is defined
+                      className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2 focus:outline-none"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product.id)} // Assuming handleDelete function is defined
+                      className="px-4 py-2 bg-red-500 text-white rounded-md focus:outline-none"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

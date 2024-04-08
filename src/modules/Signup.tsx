@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from 'yup';
 import axios from 'axios';
 import { User } from '../types/type';
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -39,14 +40,14 @@ const Signup = () => {
     try {
       const response = await axios.post('http://localhost:8080/users', { ...values, phone_number: parseInt(values.phone_number) });
       if (response.status === 200) {
-        alert('User created successfully!');
+        toast.success('User created successfully!');
         navigate('/login');
       } else {
         console.error('Error creating user:', response.statusText);
       }
       console.log(response)
     } catch (error) {
-      console.error('Error creating user:', error);
+      toast.error('Error in creating user');
     }
   };
 
