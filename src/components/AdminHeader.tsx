@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { clearStoredState } from '../api/store';
 import { logout } from '../api/authslice';
 import { useDispatch } from 'react-redux';
 import { FiUser } from 'react-icons/fi';
 import AddProductModal from '../pages/AddProductModal';
-import { Modal } from 'antd'; 
+import { Modal } from 'antd';
 import UserModal from './UserModal'; 
 
 function AdminHeader() {

@@ -9,7 +9,6 @@ export const UserDashboard = () => {
       <div className="bg-200 min-h-screen flex flex-col">
         <UserHeader />
 
-    
         <div className='bg-teal-200 mt-5 w-full h-[900px] flex justify-center items-center'>
           <img src={bag} alt="Bag" width="1600" height="1500" className="mb-90" />
         </div>

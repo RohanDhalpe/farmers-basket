@@ -17,6 +17,8 @@ import Landing from './pages/LandingPage';
 import Cart from './pages/CartPage';
 import Orderconfirm from './modules/Orderconfirm';
 import Footer from './pages/Footer';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -99,6 +101,8 @@ function App() {
 
     ])
     return (
+        <>
+        <ToastContainer/>
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
                 <div className="App">
@@ -106,6 +110,7 @@ function App() {
                 </div>
             </QueryClientProvider>
         </Provider>
+        </>
     );
 }
 

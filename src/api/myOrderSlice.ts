@@ -27,5 +27,5 @@ const myOrderSlice = createSlice({
 
 export const { addToCart, removeFromCart } = myOrderSlice.actions;
 
-export default myOrderSlice.reducer; // Add type annotation
+export default myOrderSlice.reducer; 
 

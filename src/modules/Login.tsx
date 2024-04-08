@@ -5,6 +5,7 @@ import { loginValidationSchema } from "../validations/validation";
 import axios from 'axios';
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../api/authslice"
+import { toast } from "react-toastify";
 
 interface LoginFormValues {
   email: string;
@@ -24,13 +25,15 @@ const Login = () => {
       localStorage.setItem("id", response.data.data.id);
 
       dispatch(authLogin({ userData: response.data.data }));
-      if (response.data.data.user_type === "Buyer")
+      if(response.data.data.user_type === "Buyer")
         navigate("/userpage")
       else
         navigate("/admin");
-    } catch (error) {
+    toast.success("Login Successful");
+  }catch (error) {
       setError("Invalid email or password");
-    } finally {
+      toast.error( "Inavlid credentials");
+  }finally {
       actions.setSubmitting(false);
     }
   };

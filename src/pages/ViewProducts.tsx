@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ProductData } from "../types/type";
 import AdminHeader from "../components/AdminHeader";
@@ -7,7 +7,7 @@ import img from "../assets/bg4.png";
 const ViewProducts = () => {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(9); // Number of products per page
+  const [productsPerPage] = useState(9); 
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -39,12 +39,11 @@ const ViewProducts = () => {
     fetchData();
   }, [currentPage, productsPerPage, token]);
 
-  // Logic to get current products
+  
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -69,7 +68,7 @@ const ViewProducts = () => {
               </div>
             ))}
           </div>
-          {/* Pagination */}
+        
           <ul className="flex justify-center mt-4">
             {Array.from({ length: Math.ceil(products.length / productsPerPage) }).map((_, index) => (
               <li key={index}>

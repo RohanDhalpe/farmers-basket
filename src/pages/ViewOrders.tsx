@@ -6,7 +6,7 @@ import AdminHeader from '../components/AdminHeader';
 const ViewOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [ordersPerPage] = useState(5); // Number of orders per page
+  const [ordersPerPage] = useState(5); 
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -26,7 +26,6 @@ const ViewOrders = () => {
         const OrdersData: Order[] = response.data.data;
 
         if (response.status === 200) {
-          // Convert order date format to yyyy-mm-dd
           const formattedOrders = OrdersData.map(order => ({
             ...order,
             order_date: new Date(order.order_date).toISOString().split('T')[0]
@@ -43,7 +42,6 @@ const ViewOrders = () => {
     fetchOrders();
   }, [currentPage, ordersPerPage, token]);
 
-  // Function to delete an order
   const deleteOrder = async (orderId: number) => {
     try {
       const response = await axios.delete(`http://localhost:8080/orders/${orderId}`, {
@@ -53,7 +51,6 @@ const ViewOrders = () => {
       });
 
       if (response.status === 204) {
-        // Remove the deleted order from the state
         setOrders(orders.filter(order => order.id !== orderId));
       } else {
         console.error('Error deleting order:', response.statusText);
@@ -63,12 +60,11 @@ const ViewOrders = () => {
     }
   };
 
-  // Logic to get current orders
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-  // Change page
+
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -92,7 +88,7 @@ const ViewOrders = () => {
           </div>
         ))}
       </div>
-      {/* Pagination */}
+    
       <ul className="flex justify-center mt-4">
         {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }).map((_, index) => (
           <li key={index}>

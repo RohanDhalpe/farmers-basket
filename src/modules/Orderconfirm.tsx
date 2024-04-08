@@ -14,7 +14,6 @@ function Orderconfirm() {
         <img src={orderimg} alt="Order" className="w-full" />
       </div>
 
-  
       <button onClick={goBack} className="bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-5 rounded-sm transition duration-300 mt-4">
         Back to Home
       </button>

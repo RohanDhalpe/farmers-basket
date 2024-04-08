@@ -26,7 +26,7 @@ const ViewUsers = () => {
 
         if (response.status === 200) {
           setUsers(usersData);
-          setUserCount(usersData.length); // Update user count
+          setUserCount(usersData.length);
         } else {
           console.error('Error fetching users:', response.statusText);
         }
@@ -38,7 +38,7 @@ const ViewUsers = () => {
     fetchUsers();
   }, [token]);
 
-  // Function to delete a user
+
   const deleteUser = async (userId: number) => {
     try {
       const response = await axios.delete(`http://localhost:8080/users/${userId}`, {
@@ -48,9 +48,9 @@ const ViewUsers = () => {
       });
 
       if (response.status === 204) {
-        // Remove the deleted user from the state
+        
         setUsers(users.filter(user => user.ID !== userId));
-        setUserCount(userCount - 1); // Update user count
+        setUserCount(userCount - 1);
       } else {
         console.error('Error deleting user:', response.statusText);
       }

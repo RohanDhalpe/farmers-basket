@@ -1,6 +1,3 @@
-import React from 'react';
-import Errrorimg from "../assets/Errorimg.png"
-
 export const Error = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full">

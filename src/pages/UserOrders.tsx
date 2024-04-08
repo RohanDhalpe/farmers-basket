@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Order } from "../types/type";
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ const UserOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
-  const navigate = useNavigate(); // Hook to navigate to other pages
+  const navigate = useNavigate(); 
 
   const fetchOrders = async () => {
     try {
@@ -30,15 +30,13 @@ const UserOrders = () => {
       console.log("Orders data:", ordersData);
 
       if (response.status === 200) {
-        // Filter orders by matching customer_id with user_id
         const userOrders = ordersData.filter(order => order.customer_id === parseInt(userId));
 
-        // Format order dates before setting state
         const formattedOrders = userOrders.map(order => ({
           ...order,
           order_date: new Date(order.order_date).toLocaleDateString()
         }));
-
+        
         setOrders(formattedOrders);
       } else {
         console.error('Error fetching orders:', response.statusText);
@@ -48,7 +46,6 @@ const UserOrders = () => {
     }
   };
 
-  // Function to delete an order
   const deleteOrder = async (orderId: number) => {
     try {
       const response = await axios.delete(`http://localhost:8080/orders/${orderId}`, {
@@ -58,7 +55,7 @@ const UserOrders = () => {
       });
 
       if (response.status === 204) {
-        // Remove the deleted order from the state
+        
         setOrders(orders.filter(order => order.id !== orderId));
       } else {
         console.error('Error deleting order:', response.statusText);
@@ -95,7 +92,6 @@ const UserOrders = () => {
           </div>
         ))}
       </div>
-
     </>
   );
 }

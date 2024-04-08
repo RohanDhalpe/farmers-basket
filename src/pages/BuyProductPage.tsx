@@ -1,183 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import { ProductData } from "../types/type";
-// import { Modal } from "antd";
-// import { useDispatch } from "react-redux";
-// import { addToCart } from "../api/myOrderSlice";
-// import { OrderItem } from "../api/types";
-// import bg4 from '../assets/bg4.png'
-
-// const BuyProducts = () => {
-
-//   const token = localStorage.getItem("token");
-//   const id = localStorage.getItem("id");
-
-//   const dispatch = useDispatch();
-
-//   const [open, setOpen] = useState(false);
-//   const [confirmLoading, setConfirmLoading] = useState(false);
-//   const [modalText, setModalText] = useState('Content of the modal');
-//   const [quantity, setQuantity] = useState<number>(0);
-//   const [products, setProducts] = useState<ProductData[]>([]);
-//   const [product, setProduct] = useState<ProductData>()
-//   const [loading, setLoading] = useState(true);
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [searchTerm, setSearchTerm] = useState<string>('');
-
-//   const showAddToCartModal = () => {
-//     setOpen(true);
-//   };
-
-//   const handleOk = () => {
-//     setModalText('The modal will be closed after two seconds');
-//     setConfirmLoading(true);
-//     setTimeout(() => {
-//       setOpen(false);
-//       setConfirmLoading(false);
-//     }, 2000);
-//   };
-
-//   const handleCancel = () => {
-//     console.log('Clicked cancel button');
-//     setOpen(false);
-//   };
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         if (!token) {
-//           console.error('Token is missing.');
-//           return;
-//         }
-//         console.log(id);
-//         const response = await axios.get('http://localhost:8080/products', {
-//           headers: {
-//             Authorization: `Bearer ${token}`
-//           }
-//         });
-
-//         const Products: ProductData[] = response.data.data
-
-//         if (response.status === 200) {
-//           setProducts(Products);
-//           setLoading(false);
-//         } else {
-//           console.error('Error fetching products:', response.statusText);
-//           setLoading(false);
-//         }
-//       } catch (error) {
-//         console.error('Error fetching products:', error);
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, [token]);
-
-//   const handleAddToCart = (product: ProductData, e: React.MouseEvent<HTMLButtonElement>) => {
-//     e.preventDefault();
-//     showAddToCartModal();
-//     setProduct(product);
-//   };
-
-//   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setQuantity(parseInt(e.target.value, 10));
-//   }
-
-//   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setSearchTerm(e.target.value);
-//   };
-
-//   const filteredProducts = products.filter(product =>
-//     product.name.toLowerCase().includes(searchTerm.toLowerCase())
-//   );
-
-//   return (
-//     <div className="container mt-5">
-//       <input
-//         type="text"
-//         placeholder="Search products..."
-//         onChange={handleSearch}
-//         className="border border-gray-300 rounded-md p-2 mb-4"
-//       />
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-6">
-//         {filteredProducts.map((product) => {
-//           return (
-//             <div key={product.id} className="bg-white rounded-md shadow-lg overflow-hidden mb-4">
-//               <img className="object-cover" />
-//               <div className="p-4">
-//                 <img src={bg4} alt="Product" className="w-full h-40 object-cover" />
-//                 <h4 className="text-xl mt-3 font-semibold text-black">{product.name}</h4>
-//                 <p className="text-base text-gray-600 mb-2">{product.description}</p>
-//                 <div className="flex flex-row justify-between">
-//                   <p className="text-base text-gray-600 pt-[15px]">₹{product.price}</p>
-//                   <button className="bg-green-500 hover:bg-blue-600 text-white font-bold text-sm py-2 px-4 rounded" onClick={(e) => handleAddToCart(product, e)}>Add to cart</button>
-//                 </div>
-//               </div>
-//             </div>
-//           )
-//         })}
-//       </div>
-
-//       <Modal
-//         title="Add to Cart"
-//         open={open}
-//         onOk={handleOk}
-//         onCancel={handleCancel}
-//         centered
-//         footer={[
-//           <button key="cancel" className="bg-gray-800 text-white font-bold py-2 px-4 rounded mr-2" onClick={handleCancel}>
-//             Cancel
-//           </button>,
-//           <button
-//             key="submit"
-//             className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-//             disabled={isSubmitting || quantity <= 0}
-//             onClick={() => {
-//               handleOk();
-//               if (product && quantity > 0) {
-//                 const orderItem: OrderItem = {
-//                   productInfo: product,
-//                   quantity: quantity,
-//                 };
-//                 dispatch(addToCart({ orderItem }));
-//               }
-//             }}
-//           >
-//             {isSubmitting ? 'Adding to Cart...' : 'Add to Cart'}
-//           </button>
-//         ]}
-//       >
-//         <div className="p-6">
-//           <div className="mb-6">
-//             <label htmlFor="quantity" className="block text-lg font-semibold text-gray-700 mb-2">Quantity:</label>
-//             <input
-//               type="number"
-//               id="quantity"
-//               name="quantity"
-//               className="form-input mt-1 block w-full h-12 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-//               onChange={handleQuantityChange}
-//               value={quantity}
-//               min="1"
-//               required
-//             />
-//             {quantity <= 0 && (
-//               <p className="text-red-500 text-sm mt-1">Please enter a valid quantity.</p>
-//             )}
-//           </div>
-//           <div className="mb-6">
-//             <label htmlFor="total_amount" className="block text-lg font-semibold text-gray-700 mb-2">Total Amount:</label>
-//             <div className="text-xl">₹{product && quantity * product.price}</div>
-//           </div>
-//         </div>
-//       </Modal>
-//     </div>
-//   );
-// };
-
-// export default BuyProducts;
-
-
 import { Pagination } from "antd";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -272,7 +92,7 @@ const BuyProducts = () => {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset current page when searching
+    setCurrentPage(1); 
   };
 
   const handlePageChange = (page: number) => {
@@ -297,12 +117,12 @@ const BuyProducts = () => {
         {paginatedProducts.map((product) => {
           return (
             <div key={product.id} className="bg-white rounded-md shadow-lg overflow-hidden mb-8">
-              <img src={bg4} alt="Product" className="w-full h-72 object-cover" /> {/* Increased height */}
-              <div className="p-8"> {/* Increased padding */}
-                <h4 className="text-2xl mt-4 font-semibold text-black">{product.name}</h4> {/* Increased font size */}
-                <p className="text-lg text-gray-700 mb-6">{product.description}</p> {/* Increased font size */}
+              <img src={bg4} alt="Product" className="w-full h-72 object-cover" /> 
+              <div className="p-8"> 
+                <h4 className="text-2xl mt-4 font-semibold text-black">{product.name}</h4>
+                <p className="text-lg text-gray-700 mb-6">{product.description}</p> 
                 <div className="flex justify-between items-center">
-                  <p className="text-xl text-gray-800">₹{product.price}</p> {/* Increased font size */}
+                  <p className="text-xl text-gray-800">₹{product.price}</p> 
                   <button className="bg-green-500 hover:bg-blue-600 text-white font-bold text-lg py-3 px-6 rounded-lg" onClick={(e) => handleAddToCart(product, e)}>Add to cart</button> {/* Increased font size */}
                 </div>
               </div>
@@ -310,7 +130,7 @@ const BuyProducts = () => {
           )
         })}
       </div>
-      {/* Pagination */}
+      
       <div className="flex justify-center">
         <Pagination
           current={currentPage}
@@ -319,7 +139,7 @@ const BuyProducts = () => {
           onChange={handlePageChange}
         />
       </div>
-      {/* End Pagination */}
+    
       <Modal
         title="Add to Cart"
         open={open}
@@ -360,7 +180,7 @@ const BuyProducts = () => {
               onChange={handleQuantityChange}
               value={quantity}
               min="1"
-              style={{ fontSize: "1.5em" }} // Adjust the font size as needed (1.2em is just an example)
+              style={{ fontSize: "1.5em" }} 
               required
             />
 

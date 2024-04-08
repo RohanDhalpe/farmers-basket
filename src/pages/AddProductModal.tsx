@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { productSchema } from '../validations/validation';
 import { ProductData } from '../types/type';
+import { toast } from 'react-toastify';
 
 
 function AddProductModal({ closeModal }: { closeModal: Function }) {
@@ -39,9 +40,10 @@ function AddProductModal({ closeModal }: { closeModal: Function }) {
       console.log('Data posted successfully:', response.data);
       resetForm();
       navigate('/viewproducts');
+      toast.success("Product added Successfully !")
       closeModal();
     } catch (error) {
-      console.error('Error posting data:', error);
+      toast.error("Failed to add Product!")
     }
     setIsLoading(false);
     setSubmitting(false);

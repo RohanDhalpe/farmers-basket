@@ -7,6 +7,8 @@ import { OrderItem } from '../api/types';
 import { removeFromCart } from '../api/myOrderSlice';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowLeft } from 'react-icons/hi';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
@@ -54,11 +56,11 @@ const Cart: React.FC = () => {
       }
 
       setIsPlacingOrder(false);
-      alert('Orders placed successfully!');
+      toast.success("Orders placed successfully!");
       navigate('/confirmorder');
     } catch (error) {
       console.error('Error placing order:', error);
-      alert('Failed to place orders!');
+      toast.error('Failed to place orders!');
       setIsPlacingOrder(false);
     }
   };
