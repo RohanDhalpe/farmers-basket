@@ -52,7 +52,7 @@ const UserModal = () => {
       ]}
       renderItem={(item) => (
         <List.Item>
-          <strong>{item.label}:</strong> {item.value}
+           <strong>{item.label}:</strong> {item.value}
         </List.Item>
       )}
     />

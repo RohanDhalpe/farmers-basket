@@ -72,14 +72,13 @@ const UserHeader: React.FC<UserHeaderProps> = ({ cartItems }) => {
           </div>
         </div>
 
-
         {showSidebar && (
           <div ref={sidebarRef} className="fixed inset-0 z-50 flex justify-end">
             <Sidebar className="bg-gray-100 border-r-4 border-teal-500 p-6 w-64 h-full overflow-y-auto">
               <Sidebar.Items>
                 <Sidebar.ItemGroup>
                   <Sidebar.Item href="#" icon={HiUser} className="text-teal-700 text-lg">
-                    Users
+                    My Profile
                   </Sidebar.Item>
                   <Sidebar.Item href="/userpage" icon={HiShoppingBag} className="text-teal-700 text-lg">
                     Products
@@ -87,10 +86,10 @@ const UserHeader: React.FC<UserHeaderProps> = ({ cartItems }) => {
                   <Sidebar.Item href="/myorders" icon={HiInbox} className="text-teal-700 text-lg">
                     My Orders
                   </Sidebar.Item>
-                  <Sidebar.Item href="#" icon={HiPhone} onClick={handleContact} className="text-teal-700 text-lg">
+                  <Sidebar.Item href="/userpage" icon={HiPhone} onClick={handleContact} className="text-teal-700 text-lg">
                     Contact
                   </Sidebar.Item>
-                  <Sidebar.Item href="#" icon={HiInformationCircle} onClick={handleAboutUs} className="text-teal-700 text-lg">
+                  <Sidebar.Item href="/userpage" icon={HiInformationCircle} onClick={handleAboutUs} className="text-teal-700 text-lg">
                     About Us
                   </Sidebar.Item>
                   <Sidebar.Item href="/login" icon={HiLogout} onClick={handleLogout} className="text-teal-700 text-lg">

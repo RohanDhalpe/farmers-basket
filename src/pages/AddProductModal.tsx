@@ -130,10 +130,10 @@ function AddProductModal({ closeModal }: { closeModal: Function }) {
                 />
               </div>
               <div>
-                <label htmlFor="isSeasonal" className="block font-semibold text-lg">
+                {/* <label htmlFor="isSeasonal" className="block font-semibold text-lg">
                   Is Seasonal
-                </label>
-                <Field
+                </label> */}
+                {/* <Field
                   type="checkbox"
                   id="isSeasonal"
                   name="isSeasonal"
@@ -143,7 +143,7 @@ function AddProductModal({ closeModal }: { closeModal: Function }) {
                   name="isSeasonal"
                   component="div"
                   className="text-red-500 text-lg mt-1"
-                />
+                /> */}
               </div>
               <div>
                 <label htmlFor="quantity" className="block font-semibold text-lg">

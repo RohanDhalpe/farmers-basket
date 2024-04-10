@@ -21,7 +21,6 @@ const myOrderSlice = createSlice({
           const productIdToRemove = action.payload.productId;
           state.Cart = state.Cart.filter(item => item.productInfo.id !== productIdToRemove);
       }
-
     }
 });
 

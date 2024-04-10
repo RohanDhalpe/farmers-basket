@@ -6,7 +6,7 @@ import AdminHeader from '../components/AdminHeader';
 const ViewOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [ordersPerPage] = useState(5); 
+  const [ordersPerPage] = useState(5);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -71,32 +71,36 @@ const ViewOrders = () => {
     <>
       <AdminHeader />
       <h1 className="text-2xl font-semibold mb-4 ml-5 mt-5">All Orders ({orders.length})</h1>
-      <div className="ml-5 mr-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
+      <div className="flex flex-wrap justify-center">
         {currentOrders.map(order => (
-          <div key={order.id} className="border p-4 rounded-md">
-            <p className="text-lg"><strong>Order ID:</strong> {order.id}</p>
-            <p className="text-lg"><strong>Customer ID:</strong> {order.customer_id}</p>
-            <p className="text-lg"><strong>Product ID:</strong> {order.product_id}</p>
-            <p className="text-lg"><strong>Order Date:</strong> {order.order_date}</p>
-            <p className="text-lg"><strong>Payment Option:</strong> {order.payment_option}</p>
-            <p className="text-lg"><strong>Delivery Address:</strong> {order.delivery_address}</p>
-            <p className="text-lg"><strong>Total Quantity:</strong> {order.quantity}</p>
-            <p className="text-lg"><strong>Total Amount:</strong> {order.total_amount}</p>
-            <button onClick={() => deleteOrder(order.id)} className="mt-4 bg-teal-700 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
-              Update Order
-            </button>
+          <div key={order.id} className="m-4 max-w-sm rounded overflow-hidden shadow-lg">
+            <div className="px-6 py-4">
+              <p className="text-lg"><strong>Order ID:</strong> {order.id}</p>
+              <p className="text-lg"><strong>Customer ID:</strong> {order.customer_id}</p>
+              <p className="text-lg"><strong>Product ID:</strong> {order.product_id}</p>
+              <p className="text-lg"><strong>Order Date:</strong> {order.order_date}</p>
+              <p className="text-lg"><strong>Payment Option:</strong> {order.payment_option}</p>
+              <p className="text-lg"><strong>Delivery Address:</strong> {order.delivery_address}</p>
+              <p className="text-lg"><strong>Total Quantity:</strong> {order.quantity}</p>
+              <p className="text-lg"><strong>Total Amount:</strong> {order.total_amount}</p>
+            </div>
+            <div className="px-6 py-4">
+              <button onClick={() => deleteOrder(order.id)} className="bg-teal-700 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+                Update Order
+              </button>
+            </div>
           </div>
         ))}
       </div>
-    
+
+
       <ul className="flex justify-center mt-4">
         {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }).map((_, index) => (
           <li key={index}>
             <button
               onClick={() => paginate(index + 1)}
-              className={`px-3 py-1 mx-1 focus:outline-none ${
-                currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-              }`}
+              className={`px-3 py-1 mx-1 focus:outline-none ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                }`}
             >
               {index + 1}
             </button>

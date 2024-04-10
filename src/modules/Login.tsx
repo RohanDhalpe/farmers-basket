@@ -92,7 +92,7 @@ const Login = () => {
         </Formik>
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         <p className="text-center mt-4">Not registered yet?
-          <Link to="/signup" className="text-indigo-600 font-medium inline-flex space-x-1 items-center">
+          <Link to="/signup" className="text-indigo-600 ml-3 font-medium inline-flex space-x-1 items-center">
             <span>Register now</span>
           </Link>
         </p>

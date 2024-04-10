@@ -48,7 +48,7 @@ const ViewUsers = () => {
       });
 
       if (response.status === 204) {
-        
+
         setUsers(users.filter(user => user.ID !== userId));
         setUserCount(userCount - 1);
       } else {
@@ -63,20 +63,25 @@ const ViewUsers = () => {
     <>
       <AdminHeader />
       <h1 className="text-3xl font-semibold mb-4 ml-4 mt-4">Your customers ({userCount})</h1>
-      <div className="">
+      <div className="flex flex-wrap">
         {users.map(user => (
-          <div key={user.ID} className=" ml-5 mr-5 p-4">
-            <div className="border p-4 rounded-md">
-              <h2 className="text-lg font-bold">{user.name}</h2>
-              <p className="mt-2">Email: {user.email}</p>
-              <p className="mt-2">Phone Number: {user.phone_number}</p>
-              <button onClick={() => deleteUser(user.ID)} className="mt-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
-                Delete User
-              </button>
+          <div key={user.ID} className="m-4">
+            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+              <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">{user.name}</div>
+                <p className="text-gray-700 text-base mb-2">Email: {user.email}</p>
+                <p className="text-gray-700 text-base mb-2">Phone Number: {user.phone_number}</p>
+              </div>
+              <div className="px-6 py-4">
+                <button onClick={() => deleteUser(user.ID)} className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+                  Delete User
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
+
     </>
   );
 }
