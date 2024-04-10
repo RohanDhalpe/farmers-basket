@@ -3,7 +3,7 @@ import { List } from "antd";
 import axios from "axios";
 import { User } from "../types/type";
 
-const UserModal = () => {
+const AdminModal = () => {
   const [userDetails, setUserDetails] = useState<User>();
   const token = localStorage.getItem("token");
 
@@ -44,19 +44,18 @@ const UserModal = () => {
   return (
     <List
       size="small"
-      style={{ width: "500px" }}
       dataSource={[
-        { label: "Name", value: userDetails.name },
+        { label: "Admin", value: userDetails.name },
         { label: "Phone Number", value: userDetails.phone_number },
         { label: "Role", value: userDetails.user_type },
       ]}
       renderItem={(item) => (
         <List.Item>
-           <strong>{item.label}:</strong> {item.value}
+          <strong>{item.label}:</strong> {item.value}
         </List.Item>
       )}
     />
   );
 };
 
-export default UserModal;
+export default AdminModal;

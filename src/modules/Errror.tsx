@@ -1,6 +1,3 @@
-import React from 'react';
-import Errrorimg from "../assets/Errorimg.png"
-
 export const Error = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full">
@@ -16,11 +13,6 @@ export const Error = () => {
         <li>Go back to the previous page and try again.</li>
         <li>Contact our support team for assistance.</li>
       </ul>
-      <img
-        src={Errrorimg}
-        alt="Farmer with a puzzled expression"
-        className="w-64 h-auto mt-8"
-      />
     </div>
   );
 }
